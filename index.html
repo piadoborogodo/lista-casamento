@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Presentes — Kassia & Matheus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  </head>
+  <body>
+    <div class="hero">
+      <div class="label">Lista de presentes</div>
+      <div class="names">Kassia &amp; Matheus</div>
+      <div class="date">21 de novembro</div>
+      <div class="message">
+        Sua presença já é o nosso maior presente. Mas se quiser nos presentear,
+        separamos alguns itens com carinho para o nosso novo lar.
+      </div>
+    </div>
+
+    <div class="bar">
+      <div class="filters" id="filters"></div>
+      <div class="stats">
+        <span>Disponíveis <strong id="avail">0</strong></span>
+        <span>·</span>
+        <span>Reservados <strong id="res">0</strong></span>
+      </div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <footer>✦ &nbsp; com amor, Kassia &amp; Matheus &nbsp; ✦</footer>
+
+    <div class="modal-wrap hidden" id="modal">
+      <div class="modal">
+        <div class="modal-title" id="modal-name"></div>
+        <div class="modal-sub">
+          Deixe seu nome para que os noivos saibam que este presente já foi
+          reservado.
+        </div>
+        <input type="text" id="modal-input" placeholder="Seu nome" />
+        <div class="modal-row">
+          <button class="btn-cancel" id="btn-cancel">Cancelar</button>
+          <button class="btn-confirm" id="btn-confirm">Reservar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>

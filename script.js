@@ -1,0 +1,508 @@
+// ============================================
+// FIREBASE — CONFIGURAÇÃO
+// Troque pelos valores que o Firebase te deu
+// em Configurações do projeto > Seus apps
+// ============================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  doc,
+  onSnapshot,
+  runTransaction,
+  serverTimestamp,
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD5-QQyI6NC4svwQ_rgPEfCk36GygR2pyU",
+  authDomain: "casamento-lista-presente.firebaseapp.com",
+  projectId: "casamento-lista-presente",
+  storageBucket: "casamento-lista-presente.firebasestorage.app",
+  messagingSenderId: "572003554062",
+  appId: "1:572003554062:web:00dda9c5871d65b073fd5f",
+  measurementId: "G-E8VJ1RHHX6",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const reservasRef = collection(db, "reservas");
+
+// ============================================
+// CATÁLOGO DE PRESENTES (continua fixo aqui)
+// ============================================
+const gifts = [
+  {
+    id: 1,
+    name: "Aparelho De Jantar Porcelana ",
+    cat: "Mesa Posta",
+    desc: "Aparelho De Jantar Porcelana Flat Duna 20 Peças",
+    price: "R$ 320",
+    qty: 1,
+    link: "https://www.havan.com.br/aparelho-de-jantar-porcelana-flat-duna-20-pecas-oxford/p",
+  },
+  {
+    id: 2,
+    name: "Toalha De Mesa",
+    cat: "Mesa Posta",
+    desc: "Toalha De Mesa 160Cm Athena Botanica.",
+    price: "R$ 180",
+    qty: 1,
+    link: "https://www.pernambucanas.com.br/toalha-de-mesa-160cm-athena-botanica595096000000/p",
+  },
+  {
+    id: 3,
+    name: "Air Fryer",
+    cat: "Cozinha",
+    desc: "Philips Walita Fritadeira Airfryer",
+    price: "R$ 580",
+    qty: 1,
+    link: "https://www.amazon.com.br/Fritadeira-Airfryer-Walita-Tecnologia-RapidAir/dp/B0D98VWP2V?source=ps-sl-shoppingads-lpcontext&ref_=fplfs&smid=A1ZZFT5FULY4LN&utm_source=chatgpt.com&th=1",
+  },
+  {
+    id: 4,
+    name: "Xícara Irish Coffe ",
+    cat: "Mesa Posta",
+    desc: "Xícara Irish Coffe Dynasty 230Ml.",
+    price: "R$ 280",
+    qty: 2,
+    link: "https://www.havan.com.br/xicara-irish-coffe-dynasty-230ml-vidro/p",
+  },
+  {
+    id: 5,
+    name: "Aspirador de Pó",
+    cat: "Utilidades",
+    desc: "Aspirador de pó com filtro HEPA, 1200W, 30 min de autonomia.",
+    price: "R$ 140",
+    qty: 1,
+    link: "https://loja.electrolux.com.br/aspirador-vertical-com-fio-ultra-electrolux-2-mm-1--stk15-/p?idsku=310118545&utm_source=chatgpt.comhttps://www.amazon.com.br/Aspirador-Pó-Com-Filtro-HEPA-1200W-30-min-Autonomia/dp/B0859N5JZQ?source=ps-sl-shoppingads-lpcontext&ref_=fplfs&smid=A1ZZFT5FULY4LN&th=1",
+  },
+  {
+    id: 6,
+    name: "Batedeira Planetária",
+    cat: "Cozinha",
+    desc: "Mondial BP-03W-2B com 12 Velocidades e 700W - Branca - 110V.",
+    price: "R$ 180",
+    qty: 1,
+    link: "https://www.casasbahia.com.br/batedeira-planetaria-mondial-bp-03w-2b-com-12-velocidades-e-700w-branca/p/55048232?IdSku=55048232&idLojista=10037&tipoLojista=1P&utm_source=chatgpt.com&utm_medium=llm_iahttps://www.amazon.com.br/Batedeira-Planetária-500W-10-Velocidades-Cor-Prata/dp/B0859N5JZQ?source=ps-sl-shoppingads-lpcontext&ref_=fplfs&smid=A1ZZFT5FULY4LN&th=1",
+  },
+  {
+    id: 7,
+    name: "Cafeteira Nespresso",
+    cat: "Cozinha",
+    desc: "Essenza Mini Preta 110V.",
+    price: "R$ 220",
+    qty: 1,
+    link: "https://www.nespresso.com/br/pt/order/machines/original/maquina-cafe-comprar-essenza-mini-preta-110v",
+  },
+  {
+    id: 8,
+    name: "Jogo de Cama",
+    cat: "Quarto",
+    desc: "Jogo de Cama Casal Harry Potter School of Wizard.",
+    price: "R$ 1.200",
+    qty: 1,
+    link: "https://www.pernambucanas.com.br/jogo-de-cama-casal-harry-potter-school-of-wizard670791000000/p",
+  },
+  {
+    id: 9,
+    name: "Jogo de Cama",
+    cat: "Quarto",
+    desc: "Jogo de Cama Casal Harry Potter School of Wizard Line.",
+    price: "R$ 350",
+    qty: 1,
+    link: "https://www.pernambucanas.com.br/jogo-de-cama-casal-harry-potter-school-of-wizard-line864915000000/p",
+  },
+  {
+    id: 10,
+    name: "Edredom Casal ",
+    cat: "Quarto",
+    desc: "Edredom Casal Harry Potter School of Wizard.",
+    price: "R$ 260",
+    qty: 1,
+    link: "https://www.pernambucanas.com.br/edredom-casal-harry-potter-school-of-wizard499779000000/p",
+  },
+  {
+    id: 11,
+    name: "Mini Grill Oster ",
+    cat: "Cozinha",
+    desc: "MINI GRILL OSTER 2 em 1, 1000W, 110V, OGRL230.",
+    price: "R$ 90",
+    qty: 1,
+    link: "https://www.amazon.com.br/GRILL-OSTER-1000W-110V-OGRL230/dp/B0BSP1XKYL/ref=pd_lpo_d_sccl_2/134-3338768-7108464?pd_rd_w=FXyKF&content-id=amzn1.sym.a2197dac-0fbe-4cc8-beca-b52f96ea33d5&pf_rd_p=a2197dac-0fbe-4cc8-beca-b52f96ea33d5&pf_rd_r=67HZP4P00JZ56M1KF8S0&pd_rd_wg=RPIT0&pd_rd_r=70b588c3-f304-4e9c-ba16-5064fa77bd84&pd_rd_i=B0BSP1XKYL&th=1",
+  },
+  {
+    id: 12,
+    name: "Jogo de Jantar Porcelana",
+    cat: "Mesa Posta",
+    desc: "Jogo de Jantar Porcelana com Filete de Ouro Imperial Havan Casa.",
+    price: "R$ 420",
+    qty: 1,
+    link: "https://www.havan.com.br/jogo-de-jantar-porcelana-imperial-havan-casa-20-peas/p",
+  },
+  {
+    id: 13,
+    name: "Jogo De Colcha Casal",
+    cat: "Quarto",
+    desc: "Jogo De Colcha Casal Milão 150 Fios Corttex Verde.",
+    price: "R$ 250",
+    qty: 1,
+    link: "https://www.pernambucanas.com.br/jogo-de-colcha-casal-milao-150-fios-corttex-verde-1e76886478uw2817/p",
+  },
+  {
+    id: 14,
+    name: "Jogo de Assadeiras",
+    cat: "Cozinha",
+    desc: "3 Peças Portuguesa Retangular Havan Casa - Branco",
+    price: "R$ 430",
+    qty: 1,
+    link: "https://www.havan.com.br/jogo-de-assadeiras-retangular-portuguesa-havan-casa-3-pecas-branco/p",
+  },
+  {
+    id: 15,
+    name: "Secador",
+    cat: "Utilidades",
+    desc: "Secador Style 2000W 127V - Taiff.",
+    price: "R$ 310",
+    qty: 1,
+    link: "https://www.pernambucanas.com.br/secador-taiff-style-2000w-127v-preto922908000000/p",
+  },
+  {
+    id: 16,
+    name: "Ferro de Passar ",
+    cat: "Utilidades",
+    desc: "Ferro de Passar a Vapor EasySpeed Philips Walita 220V Roxo.",
+    price: "R$ 240",
+    qty: 1,
+    link: "https://www.pernambucanas.com.br/ferro-de-passar-a-vapor-easyspeed-philips-walita-220v-roxo959548000000/p",
+  },
+  {
+    id: 17,
+    name: "Jogo de Bowls Sobremesa",
+    cat: "Mesa Posta",
+    desc: "Jogo de Bowls Sobremesa Pearl 250Ml Hauskraft 6 peças.",
+    price: "R$ 380",
+    qty: 1,
+    link: "https://www.havan.com.br/jogo-de-bowls-sobremesa-pearl-250-ml-hauskraft-6-peas/p",
+  },
+  {
+    id: 18,
+    name: "Boleira",
+    cat: "Mesa Posta",
+    desc: "Boleira com Tampa Ruvolo Modena 32Cm.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.havan.com.br/boleira-com-tampa-ruvolo-modena-32cm-vidro-transparente/p",
+  },
+  {
+    id: 19,
+    name: "Jogo de Assadeiras de Vidro",
+    cat: "Cozinha",
+    desc: "Jogo de Assadeiras Retangular Sempre Nadir.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.havan.com.br/jogo-de-assadeiras-retangular-sempre-nadir-2-peas/p",
+  },
+  {
+    id: 20,
+    name: "Taça de Gin ",
+    cat: "Mesa Posta",
+    desc: "Taça de Gin Aromas 600Ml Decormartin.",
+    price: "R$ 130",
+    qty: 2,
+    link: "https://www.havan.com.br/taca-de-gin-aromas-600ml-decormartin-sortido/p",
+  },
+  {
+    id: 21,
+    name: "Jogo de Taças de Vinho",
+    cat: "Mesa Posta",
+    desc: "Jogo de Taças Água/Vinho 6 Peças Nadir 400Ml.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.havan.com.br/jogo-de-tacas-agua-vinho-6-pecas-celebra-400ml-celebra/p",
+  },
+  {
+    id: 22,
+    name: "Jogo de Xícaras de Café ",
+    cat: "Mesa Posta",
+    desc: "Jogo de Xícaras de Café Montecarlo 80Ml Hauskraft 8 peças.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.havan.com.br/jogo-de-xicaras-de-cafe-montecarlo-80ml-hauskraft-8-peas/p",
+  },
+  {
+    id: 23,
+    name: "Jarra de Vidro",
+    cat: "Mesa Posta",
+    desc: "Jarra de Vidro com Tampa de Plástico Clink 1 Litro.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.havan.com.br/jarra-de-vidro-com-tampa-de-plastico-clink-1-litro-transparente-e-branco/p",
+  },
+  {
+    id: 24,
+    name: "Suporte para Xícaras",
+    cat: "Cozinha",
+    desc: "Suporte para Xícaras Eco Design Terra Brasil.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.havan.com.br/pxicaras-de-chacafe-terra-brasil-eco-design-arthi-diversos/p",
+  },
+  {
+    id: 25,
+    name: "Bomboniere",
+    cat: "Mesa Posta",
+    desc: "Bomboniere Vidro Havan Casa 850Ml.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.havan.com.br/bomboniere-vidro-havan-casa-850ml-sortido/p",
+  },
+  {
+    id: 26,
+    name: "Protetor de Colchão Casal",
+    cat: "Quarto",
+    desc: "Protetor de Colchão King Impermeável Havan Casa.",
+    price: "R$ 130",
+    qty: 2,
+    link: "https://www.havan.com.br/protetor-de-colchao-king-impermeavel-havan-casa-areia/p",
+  },
+  {
+    id: 27,
+    name: "Toalha de Mesa",
+    cat: "Mesa Posta",
+    desc: "Toalha de Mesa Babados 140x140.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.pernambucanas.com.br/toalha-de-mesa-140x140-babados-off-white667450000000/p",
+  },
+  {
+    id: 28,
+    name: "Toalha De Mesa",
+    cat: "Mesa Posta",
+    desc: "Toalha De Mesa 1,40X1,40 M Listras Azul.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.pernambucanas.com.br/toalha-de-mesa-1-40x1-40-m-listras-azul566362000000/p",
+  },
+  {
+    id: 29,
+    name: "Toalha de Mesa",
+    cat: "Mesa Posta",
+    desc: "Toalha de Mesa em Algodão Estampado Pernambucanas Mesa.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.pernambucanas.com.br/trilho-de-mesa-35-cm-x-100-cm-athena-botanica594147000000/p",
+  },
+  {
+    id: 30,
+    name: "Edredom Casal",
+    cat: "Quarto",
+    desc: "Edredom Casal Microfibra Ket Flowers Verde.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.pernambucanas.com.br/edredom-casal-microfibra-rolinho-ket-flowers403357000000/p",
+  },
+  {
+    id: 31,
+    name: "Jogo De Cama",
+    cat: "Quarto",
+    desc: "Jogo De Cama Casal Toque Acetinado Altenburg Branco.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.pernambucanas.com.br/jogo-de-cama-casal-toque-acetinado-altenburg-branco-175s266916851fl7/p",
+  },
+  {
+    id: 32,
+    name: "Toalhas de Banho",
+    cat: "Banheiro",
+    desc: "Toalha Banhão 76x152 cm Harry Potter School of Wizard.",
+    price: "R$ 130",
+    qty: 2,
+    link: "https://www.pernambucanas.com.br/toalha-banhao-76x152-cm-harry-potter-school-of-wizard788306000000/p",
+  },
+  {
+    id: 33,
+    name: "Toalhas de Banho",
+    cat: "Banheiro",
+    desc: "Jogo De Banho Liso Sortido Pnb.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.pernambucanas.com.br/jogo-de-banho-liso-sortido-pnb544335000000/p",
+  },
+  {
+    id: 34,
+    name: "Contribuição para o futuro filho que NÃO está nos planos ainda",
+    cat: "Gincana",
+    desc: "Ainda não tá nos planos, mas o clima colabora 😄",
+    price: "R$ 120",
+    qty: 1,
+    link: "",
+  },
+];
+
+let reserved = {}; // { [giftId]: nomeDoConvidado }  — vem do Firestore
+let activeFilter = "all";
+let pendingId = null;
+
+const cats = ["all", ...new Set(gifts.map((g) => g.cat))];
+
+function buildFilters() {
+  const el = document.getElementById("filters");
+  el.innerHTML = "";
+  cats.forEach((c) => {
+    const b = document.createElement("button");
+    b.className = "filter-btn" + (c === activeFilter ? " active" : "");
+    b.textContent = c === "all" ? "Todos" : c;
+    b.onclick = () => {
+      activeFilter = c;
+      buildFilters();
+      render();
+    };
+    el.appendChild(b);
+  });
+}
+
+function render() {
+  const grid = document.getElementById("grid");
+  const list =
+    activeFilter === "all"
+      ? gifts
+      : gifts.filter((g) => g.cat === activeFilter);
+  grid.innerHTML = "";
+
+  if (!list.length) {
+    grid.innerHTML =
+      '<div class="no-results">Nenhum presente nessa categoria.</div>';
+    return;
+  }
+
+  list.forEach((g) => {
+    const isRes = !!reserved[g.id];
+    const isGincana = g.cat === "Gincana";
+    const card = document.createElement("div");
+    card.className = "gift-card" + (isRes ? " reserved" : "");
+    card.innerHTML = `
+      ${isRes ? '<div class="reserved-tag">Reservado</div>' : ""}
+      <div class="gift-cat">${g.cat}</div>
+      <div class="gift-name">${g.name}</div>
+      <div class="gift-desc">${g.desc}${g.qty > 1 ? ` <span class="gift-qty">(${g.qty} unid.)</span>` : ""}</div>
+      ${isGincana ? `<div class="gift-price">${g.price}</div>` : ""}
+      ${
+        isGincana
+          ? `
+        <div class="gift-pix">
+          <img src="img/pix-qrcode.png" alt="QR Code Pix" class="gift-qr" />
+          <span class="gift-pix-label">Pix pra contribuir direto</span>
+        </div>
+      `
+          : ""
+      }
+      ${g.link ? `<a href="${g.link}" target="_blank" rel="noopener noreferrer" class="gift-link">Ver produto ↗</a>` : ""}
+      <div class="gift-bottom">
+        <button class="reserve-btn" ${isRes ? "disabled" : ""} data-id="${g.id}">
+          ${isRes ? "Reservado" : "Reservar"}
+        </button>
+      </div>
+    `;
+    if (!isRes)
+      card.querySelector(".reserve-btn").onclick = () => openModal(g.id);
+    grid.appendChild(card);
+  });
+
+  const resCount = Object.keys(reserved).length;
+  document.getElementById("avail").textContent = gifts.length - resCount;
+  document.getElementById("res").textContent = resCount;
+}
+
+function openModal(id) {
+  pendingId = id;
+  document.getElementById("modal-name").textContent = gifts.find(
+    (g) => g.id === id,
+  ).name;
+  document.getElementById("modal-input").value = "";
+  document.getElementById("modal").classList.remove("hidden");
+  setTimeout(() => document.getElementById("modal-input").focus(), 80);
+}
+
+function closeModal() {
+  document.getElementById("modal").classList.add("hidden");
+  pendingId = null;
+}
+
+// ============================================
+// RESERVAR PRESENTE — grava no Firestore
+// Usa transaction pra impedir que dois
+// convidados reservem o mesmo item ao mesmo tempo
+// ============================================
+async function confirmReserve() {
+  const name = document.getElementById("modal-input").value.trim();
+  if (!name) {
+    document.getElementById("modal-input").focus();
+    return;
+  }
+
+  const confirmBtn = document.getElementById("btn-confirm");
+  confirmBtn.disabled = true;
+  confirmBtn.textContent = "Reservando...";
+
+  const giftId = String(pendingId);
+  const ref = doc(db, "reservas", giftId);
+
+  try {
+    await runTransaction(db, async (transaction) => {
+      const docSnap = await transaction.get(ref);
+      if (docSnap.exists()) {
+        throw new Error("already-reserved");
+      }
+      const presente = gifts.find((g) => g.id === pendingId);
+      transaction.set(ref, {
+        presente: presente.name,
+        convidado: name,
+        reservadoEm: serverTimestamp(),
+      });
+    });
+    closeModal();
+    showToast("Presente reservado! Obrigado. 🤍");
+  } catch (err) {
+    closeModal();
+    if (err.message === "already-reserved") {
+      showToast("Ops! Esse presente acabou de ser reservado por outra pessoa.");
+    } else {
+      console.error(err);
+      showToast("Erro ao reservar. Tente novamente.");
+    }
+  } finally {
+    confirmBtn.disabled = false;
+    confirmBtn.textContent = "Reservar";
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 3000);
+}
+
+document.getElementById("btn-cancel").onclick = closeModal;
+document.getElementById("btn-confirm").onclick = confirmReserve;
+document.getElementById("modal").onclick = (e) => {
+  if (e.target === document.getElementById("modal")) closeModal();
+};
+document.getElementById("modal-input").onkeydown = (e) => {
+  if (e.key === "Enter") confirmReserve();
+};
+
+// ============================================
+// ESCUTA O FIRESTORE EM TEMPO REAL
+// Toda vez que alguém reserva algo (de qualquer
+// dispositivo), a tela de todos atualiza sozinha
+// ============================================
+onSnapshot(reservasRef, (snapshot) => {
+  reserved = {};
+  snapshot.forEach((docSnap) => {
+    reserved[docSnap.id] = docSnap.data().convidado;
+  });
+  render();
+});
+
+buildFilters();
