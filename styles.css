@@ -221,6 +221,12 @@ body {
   text-align: center;
 }
 
+.gift-contributors {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
 .reserve-btn {
   font-family: "DM Sans", sans-serif;
   font-size: 11px;

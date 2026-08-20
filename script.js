@@ -11,6 +11,8 @@ import {
   onSnapshot,
   runTransaction,
   serverTimestamp,
+  setDoc,
+  arrayUnion,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -366,15 +368,6 @@ const gifts = [
   },
   {
     id: 38,
-    name: "🧾 Contribuição para as contas que chegam sem serem convidadas",
-    cat: "Gincana",
-    desc: "Boleto não avisa, mas sempre aparece.",
-    price: "R$ 160",
-    qty: 1,
-    link: "",
-  },
-  {
-    id: 39,
     name: "🛌 Fundo emergencial para uma cama maior",
     cat: "Gincana",
     desc: "Porque o casal vai crescer (ou pelo menos os pets).",
@@ -383,7 +376,7 @@ const gifts = [
     link: "",
   },
   {
-    id: 40,
+    id: 39,
     name: "🚿 Chuveiro para lavar a alma depois da discussão",
     cat: "Gincana",
     desc: "Um banho resolve muita coisa.",
@@ -392,7 +385,7 @@ const gifts = [
     link: "",
   },
   {
-    id: 41,
+    id: 40,
     name: "📺 Assinatura de streaming para decidir por 45 minutos o que assistir",
     cat: "Gincana",
     desc: "O verdadeiro desafio do relacionamento.",
@@ -401,7 +394,7 @@ const gifts = [
     link: "",
   },
   {
-    id: 42,
+    id: 41,
     name: "🧦 Kit de meias porque uma sempre desaparece misteriosamente",
     cat: "Gincana",
     desc: "Pra onde elas vão, ninguém sabe.",
@@ -410,7 +403,7 @@ const gifts = [
     link: "",
   },
   {
-    id: 43,
+    id: 42,
     name: '🥇 Troféu "quem estiver errado primeiro pede desculpas"',
     cat: "Gincana",
     desc: "Prêmio de paz doméstica.",
@@ -419,7 +412,7 @@ const gifts = [
     link: "",
   },
   {
-    id: 44,
+    id: 43,
     name: "🧳 Fundo para a lua de mel porque a realidade vai chegar",
     cat: "Gincana",
     desc: "Aproveita antes das contas voltarem.",
@@ -428,7 +421,7 @@ const gifts = [
     link: "",
   },
   {
-    id: 45,
+    id: 44,
     name: '💰 Fundo "o salário acabou e ainda faltam 20 dias"',
     cat: "Gincana",
     desc: "Clássico de todo mês.",
@@ -439,6 +432,7 @@ const gifts = [
 ];
 
 let reserved = {}; // { [giftId]: nomeDoConvidado }  — vem do Firestore
+let contributions = {}; // { [giftId]: [nome1, nome2, ...] } — só pra itens de Gincana
 let activeFilter = "all";
 let pendingId = null;
 
@@ -475,8 +469,9 @@ function render() {
   }
 
   list.forEach((g) => {
-    const isRes = !!reserved[g.id];
     const isGincana = g.cat === "Gincana";
+    const isRes = !isGincana && !!reserved[g.id];
+    const contributors = contributions[g.id] || [];
     const card = document.createElement("div");
     card.className = "gift-card" + (isRes ? " reserved" : "");
     card.innerHTML = `
@@ -495,10 +490,11 @@ function render() {
       `
           : ""
       }
+      ${isGincana && contributors.length ? `<div class="gift-contributors">${contributors.length} pessoa${contributors.length > 1 ? "s" : ""} já contribuiu(íram) 🤍</div>` : ""}
       ${g.link ? `<a href="${g.link}" target="_blank" rel="noopener noreferrer" class="gift-link">Ver produto ↗</a>` : ""}
       <div class="gift-bottom">
         <button class="reserve-btn" ${isRes ? "disabled" : ""} data-id="${g.id}">
-          ${isRes ? "Reservado" : "Reservar"}
+          ${isGincana ? "Contribuir" : isRes ? "Reservado" : "Reservar"}
         </button>
       </div>
     `;
@@ -541,33 +537,46 @@ async function confirmReserve() {
 
   const confirmBtn = document.getElementById("btn-confirm");
   confirmBtn.disabled = true;
-  confirmBtn.textContent = "Reservando...";
+  confirmBtn.textContent = "Enviando...";
 
+  const gift = gifts.find((g) => g.id === pendingId);
   const giftId = String(pendingId);
   const ref = doc(db, "reservas", giftId);
 
   try {
-    await runTransaction(db, async (transaction) => {
-      const docSnap = await transaction.get(ref);
-      if (docSnap.exists()) {
-        throw new Error("already-reserved");
-      }
-      const presente = gifts.find((g) => g.id === pendingId);
-      transaction.set(ref, {
-        presente: presente.name,
-        convidado: name,
-        reservadoEm: serverTimestamp(),
+    if (gift.cat === "Gincana") {
+      await setDoc(
+        ref,
+        {
+          presente: gift.name,
+          contribuintes: arrayUnion(name),
+        },
+        { merge: true },
+      );
+      closeModal();
+      showToast("Contribuição registrada! Obrigado. 🤍");
+    } else {
+      await runTransaction(db, async (transaction) => {
+        const docSnap = await transaction.get(ref);
+        if (docSnap.exists()) {
+          throw new Error("already-reserved");
+        }
+        transaction.set(ref, {
+          presente: gift.name,
+          convidado: name,
+          reservadoEm: serverTimestamp(),
+        });
       });
-    });
-    closeModal();
-    showToast("Presente reservado! Obrigado. 🤍");
+      closeModal();
+      showToast("Presente reservado! Obrigado. 🤍");
+    }
   } catch (err) {
     closeModal();
     if (err.message === "already-reserved") {
       showToast("Ops! Esse presente acabou de ser reservado por outra pessoa.");
     } else {
       console.error(err);
-      showToast("Erro ao reservar. Tente novamente.");
+      showToast("Erro ao registrar. Tente novamente.");
     }
   } finally {
     confirmBtn.disabled = false;
@@ -598,8 +607,14 @@ document.getElementById("modal-input").onkeydown = (e) => {
 // ============================================
 onSnapshot(reservasRef, (snapshot) => {
   reserved = {};
+  contributions = {};
   snapshot.forEach((docSnap) => {
-    reserved[docSnap.id] = docSnap.data().convidado;
+    const data = docSnap.data();
+    if (data.contribuintes) {
+      contributions[docSnap.id] = data.contribuintes;
+    } else {
+      reserved[docSnap.id] = data.convidado;
+    }
   });
   render();
 });
