@@ -429,12 +429,157 @@ const gifts = [
     qty: 1,
     link: "",
   },
+  {
+    id: 45,
+    name: "Jogo de 4 Xícaras e 4 Pires Disney",
+    cat: "Mesa Posta",
+    desc: "Jogo de 4 Xícaras e 4 Pires Disney",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.avon.com.br/p/jogo-de-4-xicaras-e-4-pires-disney/AVNBRA-204463?position=10&listTitle=category+page+list+showcase+-+casa+estilo+cozinha+pratos",
+  },
+  {
+    id: 46,
+    name: "Jogo 4 Pratos Fundos Disney",
+    cat: "Mesa Posta",
+    desc: "Jogo 4 Pratos Fundos Disney",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.avon.com.br/p/jogo-4-pratos-fundos-disney/AVNBRA-204465?position=12&listTitle=category+page+list+showcase+-+casa+estilo+cozinha+pratos",
+  },
+  {
+    id: 47,
+    name: "Jogo 4 Pratos Fundos Esplendor",
+    cat: "Mesa Posta",
+    desc: "Jogo 4 Pratos Fundos Esplendor",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.avon.com.br/p/jogo-4-pratos-fundos-esplendor/AVNBRA-248202?position=20&listTitle=category+page+list+showcase+-+casa+estilo+cozinha+pratos",
+  },
+  {
+    id: 48,
+    name: "Jogo 4 Xícaras e 4 Pires Esplendor",
+    cat: "Mesa Posta",
+    desc: "Jogo 4 Xícaras e 4 Pires Esplendor",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.avon.com.br/p/jogo-4-xicaras-e-4-pires-esplendor/AVNBRA-248205?position=19&listTitle=category+page+list+showcase+-+casa+estilo+cozinha+pratos",
+  },
+  {
+    id: 49,
+    name: "Jogo 4 Pratos Rasos Esplendor",
+    cat: "Mesa Posta",
+    desc: "Jogo 4 Pratos Rasos Esplendor",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.avon.com.br/p/jogo-4-pratos-rasos-esplendor/AVNBRA-248232?position=21&listTitle=category+page+list+showcase+-+casa+estilo+cozinha+pratos",
+  },
+  {
+    id: 50,
+    name: "Kit Colcha Casal ",
+    cat: "Quarto",
+    desc: "Kit Colcha Casal Versalhes/Napoli Estampada Havan Casa 3 Peças - Floral Azul.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.havan.com.br/kit-colcha-casal-versalhes-estampada-havan-casa-3-pcs-floral-azul/p",
+  },
+  {
+    id: 51,
+    name: "Kit Colcha Casal",
+    cat: "Quarto",
+    desc: "Kit Colcha Casal Lisa Versalhes/Napoli Havan Casa 3 Peças - Midnight Blue.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.havan.com.br/kit-colcha-casal-100-poliester-lisa-versalhes-havan-casa-3-pcs-midnight-blue/p",
+  },
+  {
+    id: 52,
+    name: "Kit Colcha Casal",
+    cat: "Quarto",
+    desc: "Kit Colcha Casal Lisa Versalhes/Napoli Havan Casa 3 Peças - Verde.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.havan.com.br/kit-colcha-casal-100-poliester-lisa-versalhes-havan-casa-3-pcs-verde/p",
+  },
+  {
+    id: 53,
+    name: "Kit Colcha Casal",
+    cat: "Quarto",
+    desc: "Kit Colcha Casal Estampada Versalhes/Napoli Havan Casa 3 Peças - Folhagens Verde.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.havan.com.br/kit-colcha-casal-estampada-versalhes-3-pecas-havan-casa-folhagens-verde/p",
+  },
+  {
+    id: 54,
+    name: "Edredom Casal ",
+    cat: "Quarto",
+    desc: "Edredom Casal de Malha Tóquio/Mescla Milano Havan Casa - Grid",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.havan.com.br/edredom-casal-de-malha-toquio-mescla-milano-havan-casa-grid/p",
+  },
+  {
+    id: 55,
+    name: "Cobertor Casal",
+    cat: "Quarto",
+    desc: "Cobertor Casal 100% Poliéster Premier Canelado Havan Casa - Verde Capri",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.havan.com.br/cobertor-casal-100-poliester-premier-canelado-havan-casa-verde-capri/p",
+  },
+  {
+    id: 56,
+    name: "Sousplat ",
+    cat: "Mesa Posta",
+    desc: "Sousplat Basic Havan - Azul Marinho",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.havan.com.br/sousplat-basic-havan-azul-marinho/p",
+  },
+  {
+    id: 57,
+    name: "Rack para TV",
+    cat: "Sala de Estar",
+    desc: "Rack para TV Até 75",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://homedock.com.br/products/rack-para-tv-at-75-2-gavetas-2-portas-jasper-185-cm-canella-c-champanhe",
+  },
+  {
+    id: 58,
+    name: "Smart TV ",
+    cat: "Sala de Estar",
+    desc: "Smart TV TCL 50 Polegadas QLED 4K P7K WiFi Bluetooth Google TV HDR10+ Dolby Atmos Dolby Vision 50P7K.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://www.lojatcl.com.br/smart-tv-tcl-50-polegadas-qled-4k-p7k-wifi-bluetooth-google-tv-hdr10-dolby-atmos-dolby-vision-50p7k/p",
+  },
+  {
+    id: 59,
+    name: "Potes Herméticos",
+    cat: "Cozinha",
+    desc: "Potes Herméticos Electrolux de Plástico Branco Retangular com 20 Unidades.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://loja.electrolux.com.br/conjunto-de-potes-hermeticos-de-plastico-electrolux-20-unidades/p",
+  },
+  {
+    id: 60,
+    name: "Potes Herméticos",
+    cat: "Cozinha",
+    desc: "Potes Herméticos Porta-Mantimentos com Tampa de Bambu.",
+    price: "R$ 130",
+    qty: 1,
+    link: "https://loja.electrolux.com.br/potes-hermeticos-porta-mantimentos-com-tampa-de-bambu-electrolux/p",
+  },
 ];
 
 let reserved = {}; // { [giftId]: nomeDoConvidado }  — vem do Firestore
 let contributions = {}; // { [giftId]: [nome1, nome2, ...] } — só pra itens de Gincana
 let activeFilter = "all";
 let pendingId = null;
+let showCount = 30;
 
 const cats = ["all", ...new Set(gifts.map((g) => g.cat))];
 
@@ -447,6 +592,7 @@ function buildFilters() {
     b.textContent = c === "all" ? "Todos" : c;
     b.onclick = () => {
       activeFilter = c;
+      showCount = 30;
       buildFilters();
       render();
     };
@@ -456,11 +602,13 @@ function buildFilters() {
 
 function render() {
   const grid = document.getElementById("grid");
-  const list =
+  const filtered =
     activeFilter === "all"
       ? gifts
       : gifts.filter((g) => g.cat === activeFilter);
+  const list = activeFilter === "all" ? filtered.slice(0, showCount) : filtered;
   grid.innerHTML = "";
+  document.querySelector(".show-more-btn")?.remove();
 
   if (!list.length) {
     grid.innerHTML =
@@ -490,7 +638,6 @@ function render() {
       `
           : ""
       }
-      ${isGincana && contributors.length ? `<div class="gift-contributors">${contributors.length} pessoa${contributors.length > 1 ? "s" : ""} já contribuiu(íram) 🤍</div>` : ""}
       ${g.link ? `<a href="${g.link}" target="_blank" rel="noopener noreferrer" class="gift-link">Ver produto ↗</a>` : ""}
       <div class="gift-bottom">
         <button class="reserve-btn" ${isRes ? "disabled" : ""} data-id="${g.id}">
@@ -506,6 +653,17 @@ function render() {
   const resCount = Object.keys(reserved).length;
   document.getElementById("avail").textContent = gifts.length - resCount;
   document.getElementById("res").textContent = resCount;
+
+  if (activeFilter === "all" && showCount < filtered.length) {
+    const moreBtn = document.createElement("button");
+    moreBtn.className = "show-more-btn";
+    moreBtn.textContent = "Mostrar mais";
+    moreBtn.onclick = () => {
+      showCount += 30;
+      render();
+    };
+    grid.after(moreBtn);
+  }
 }
 
 function openModal(id) {

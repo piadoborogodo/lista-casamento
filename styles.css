@@ -50,6 +50,23 @@ body {
   margin: 10px 0 4px;
 }
 
+.show-more-btn {
+  display: block;
+  margin: 1.5rem auto 0;
+  font-family: "DM Sans", sans-serif;
+  font-size: 13px;
+  padding: 8px 20px;
+  border: 0.5px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.show-more-btn:hover {
+  color: var(--text-primary);
+  border-color: #888;
+}
 .date {
   font-size: 13px;
   color: var(--text-secondary);
