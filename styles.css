@@ -48,6 +48,7 @@ body {
   color: var(--text-primary);
   line-height: 1;
   margin: 10px 0 4px;
+  text-align: center;
 }
 
 .show-more-btn {
