@@ -333,7 +333,7 @@ const gifts = [
   {
     id: 34,
     name: "Contribuição para o futuro filho que NÃO está nos planos ainda",
-    cat: "URGENTE 🚨",
+    cat: "URGENTE",
     desc: "Ainda não tá nos planos, mas o clima colabora 😄",
     price: "R$ 120",
     qty: 1,
@@ -342,7 +342,7 @@ const gifts = [
   {
     id: 35,
     name: 'Vale 1 "você estava certo(a)"',
-    cat: "URGENTE 🚨",
+    cat: "URGENTE",
     desc: "Pra usar naquela discussão que não vale a pena continuar 😄",
     price: "R$ 60",
     qty: 1,
@@ -351,7 +351,7 @@ const gifts = [
   {
     id: 36,
     name: "Contribuição para o futuro filho que NÃO está nos planos ainda",
-    cat: "URGENTE 🚨",
+    cat: "URGENTE",
     desc: "Ainda não tá nos planos, mas o clima colabora 😄",
     price: "R$ 120",
     qty: 1,
@@ -360,7 +360,7 @@ const gifts = [
   {
     id: 37,
     name: "💸 Pix para ajudar a pagar as escolhas duvidosas do casal",
-    cat: "URGENTE 🚨",
+    cat: "URGENTE",
     desc: "Porque nem toda decisão em casal é uma boa ideia.",
     price: "R$ 150",
     qty: 1,
@@ -369,7 +369,7 @@ const gifts = [
   {
     id: 38,
     name: "🛌 Fundo emergencial para uma cama maior",
-    cat: "URGENTE 🚨",
+    cat: "URGENTE",
     desc: "Porque o casal vai crescer (ou pelo menos os pets).",
     price: "R$ 130",
     qty: 1,
@@ -378,7 +378,7 @@ const gifts = [
   {
     id: 39,
     name: "🚿 Chuveiro para lavar a alma depois da discussão",
-    cat: "URGENTE 🚨",
+    cat: "URGENTE",
     desc: "Um banho resolve muita coisa.",
     price: "R$ 250",
     qty: 1,
@@ -387,7 +387,7 @@ const gifts = [
   {
     id: 40,
     name: "📺 Assinatura de streaming para decidir por 45 minutos o que assistir",
-    cat: "URGENTE 🚨",
+    cat: "URGENTE",
     desc: "O verdadeiro desafio do relacionamento.",
     price: "R$ 80",
     qty: 1,
@@ -396,7 +396,7 @@ const gifts = [
   {
     id: 41,
     name: "🧦 Kit de meias porque uma sempre desaparece misteriosamente",
-    cat: "URGENTE 🚨",
+    cat: "URGENTE",
     desc: "Pra onde elas vão, ninguém sabe.",
     price: "R$ 90",
     qty: 1,
@@ -405,7 +405,7 @@ const gifts = [
   {
     id: 42,
     name: '🥇 Troféu "quem estiver errado primeiro pede desculpas"',
-    cat: "URGENTE 🚨",
+    cat: "URGENTE",
     desc: "Prêmio de paz doméstica.",
     price: "R$ 500",
     qty: 1,
@@ -414,7 +414,7 @@ const gifts = [
   {
     id: 43,
     name: "🧳 Fundo para a lua de mel porque a realidade vai chegar",
-    cat: "URGENTE 🚨",
+    cat: "URGENTE",
     desc: "Aproveita antes das contas voltarem.",
     price: "R$ 400",
     qty: 1,
@@ -423,7 +423,7 @@ const gifts = [
   {
     id: 44,
     name: '💰 Fundo "o salário acabou e ainda faltam 20 dias"',
-    cat: "URGENTE 🚨",
+    cat: "URGENTE",
     desc: "Clássico de todo mês.",
     price: "R$ 280",
     qty: 1,
@@ -617,7 +617,7 @@ function render() {
   }
 
   list.forEach((g) => {
-    const isGincana = g.cat === "Gincana";
+    const isGincana = g.cat === "URGENTE";
     const isRes = !isGincana && !!reserved[g.id];
     const contributors = contributions[g.id] || [];
     const card = document.createElement("div");
@@ -702,7 +702,7 @@ async function confirmReserve() {
   const ref = doc(db, "reservas", giftId);
 
   try {
-    if (gift.cat === "Gincana") {
+    if (gift.cat === "URGENTE") {
       await setDoc(
         ref,
         {
