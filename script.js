@@ -265,7 +265,7 @@ const gifts = [
     desc: "Protetor de Colchão King Impermeável Havan Casa.",
     price: "R$ 130",
     qty: 2,
-    link: "https://www.havan.com.br/protetor-de-colchao-king-impermeavel-havan-casa-areia/p",
+    link: "https://www.havan.com.br/protetor-de-colchao-queen-impermeavel-havan-casa-branco/p",
   },
   {
     id: 27,
